@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Register</title>
+  <link rel="stylesheet" href="login-register.component.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">Habitly</div>
+  <div class="navigation">
+    <button (click)="showLoginForm()">Login</button>
+    <button (click)="showRegisterForm()">Register</button>
+  </div>
+</header>
+
+<div class="wrapper" [ngClass]="getWrapperClass()">
+  <div class="form-box login" *ngIf="showLogin">
+    <h2>Login</h2>
+    <div id="loginMessage" class="messageDiv" style="display:none"></div>
+    <div class="input-box">
+      <input type="email" required>
+      <label>Email</label>
+    </div>
+    <div class="input-box">
+      <input type="password" required>
+      <label>Password</label>
+    </div>
+    <!--
+    <div class="remember-forgot">
+      <label><input type="checkbox"> Remember me</label>
+      <a href="#">Forgot password?</a>
+    </div>
+    -->
+    <button class="btn">Login</button>
+    <div class="login-google">
+      <p>Login with <a href="#" (click)="showRegisterForm()">Google</a></p>
+    </div>
+    <!--
+    <div class="login-register">
+      <p>Don't have an account? <a href="#" (click)="showRegisterForm()">Register here</a></p>
+    </div>
+    -->
+  </div>
+
+  <div class="form-box register" *ngIf="showRegister">
+    <h2>Register</h2>
+    <div id="registerMessage" class="messageDiv" style="display:none"></div>
+    <div class="input-box">
+      <input type="text" id="rUsername" required>
+      <label>Username</label>
+    </div>
+    <div class="input-box">
+      <input type="email" id="rEmail" required>
+      <label>Email</label>
+    </div>
+    <div class="input-box">
+      <input type="password" id="rPassword" required>
+      <label>Password</label>
+    </div>
+    <button class="btn" id="Register">Register</button>
+    <div class="register-google">
+      <p>Register with <a href="#" (click)="showRegisterForm()">Google</a></p>
+    </div>
+    <!--
+    <div class="login-register">
+      <p>Already have an account? <a href="#" (click)="showLoginForm()">Login here</a></p>
+    </div>
+    -->
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+  import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCusRVPdwmkplSzqcg19u4rf-w-wOx5ek4",
+    authDomain: "ssdproject-23aa9.firebaseapp.com",
+    projectId: "ssdproject-23aa9",
+    storageBucket: "ssdproject-23aa9.firebasestorage.app",
+    messagingSenderId: "267112903416",
+    appId: "1:267112903416:web:99d74d76c0ca21ef58410d",
+    measurementId: "G-WCEPFMP510"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  function showMessage(message, divId) {
+    const messageDiv = document.getElementById(divId);
+    messageDiv.style.display = "block";
+    messageDiv.innerHTML = message;
+    messageDiv.style.opacity = 1;
+    setTimeout(() => {
+      messageDiv.style.opacity = 0;
+    }, 5000);
+  }
+
+  const register = document.getElementById('Register');
+  console.log('Adding event listener to Register button');
+  register.addEventListener('click', (event) => {
+    event.preventDefault();
+    console.log('Register button clicked');
+    const username = document.getElementById('rUsername').value;
+    const email = document.getElementById('rEmail').value;
+    const password = document.getElementById('rPassword').value;
+
+    const auth = getAuth();
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log('User created:', userCredential);
+        const user = userCredential.user;
+        const userData = {
+          username: username,
+          email: email
+        };
+        showMessage('Account Created Successfully', 'registerMessage');
+        const docRef = doc(db, "users", user.uid);
+        setDoc(docRef, userData)
+          .then(() => {
+            console.log('User data saved to Firestore');
+            window.location.href = 'login-register.component.html';
+          })
+          .catch((error) => {
+            console.error("Error writing document", error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error creating user:', error);
+        const errorCode = error.code;
+        if (errorCode === 'auth/email-already-in-use') {
+          showMessage('Email Address Already Exists!', 'registerMessage');
+        } else {
+          showMessage('Unable to create user', 'registerMessage');
+        }
+      });
+  });
+</script>
+
+</body>
+</html>
