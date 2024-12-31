@@ -1,0 +1,116 @@
+@import url("http://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #7AA6CB;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #213D55;
+  z-index: 99;
+}
+
+.logo {
+  font-size: 2em;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navigation a {
+  position: relative;
+  font-size: 1.1em;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 40px;
+}
+
+.navigation a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: white;
+  border-radius: 5px;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform 0.5s;
+}
+
+.navigation a:hover::after {
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+.navigation .btnLogout {
+  display: flex; /* Ensures the text is aligned within the button */
+  justify-content: center; /* Centers text horizontally */
+  align-items: center; /* Centers text vertically */
+  width: 130px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid white;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: white;
+  font-weight: 500;
+  margin-left: 40px;
+  transition: 0.5s;
+  text-decoration: none; /* Removes the underline */
+}
+
+.navigation .btnLogout:hover {
+  background: white;
+  color: #162938;
+}
+
+.navigation .btnLogout::after {
+  display: none; /* Disables the hover underline effect */
+}
+
+main {
+  margin-top: 120px;
+  text-align: center;
+  color: white;
+}
+
+main h1 {
+  font-size: 3em;
+  font-weight: bold;
+  margin-top: 60px;
+}
+
+main p {
+  font-size: 1.5em;
+  margin-top: 20px;
+  color: #ccc;
+}
