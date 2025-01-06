@@ -22,16 +22,26 @@
     <h2>Login</h2>
     <div id="loginMessage" class="messageDiv" style="display:none"></div>
     <div class="input-box">
-      <input type="email" id="loginEmail" required>
+      <input type="email"
+             name="email" required/>
       <label>Email</label>
     </div>
     <div class="input-box">
-      <input type="password" id="loginPassword" required>
+      <input type="password"  required>
       <label>Password</label>
     </div>
     <button class="btn" id="Login" (click)="onLogin()">Login</button>
     <div class="login-google">
-      <p>Login with <a href="#" (click)="showRegisterForm()">Google</a></p>
+      <button (click)="loginWithGoogle()">Login with Google</button>
+
+      <div *ngIf="user$ | async as user; else loggedOut">
+        <p>Welcome, {{ user.displayName }}</p>
+        <img [src]="user.photoURL" alt="User Image">
+      </div>
+
+      <ng-template #loggedOut>
+        <p>You're not logged in.</p>
+      </ng-template>
     </div>
   </div>
 
@@ -57,24 +67,13 @@
     </div>
   </div>
 </div>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
   import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCusRVPdwmkplSzqcg19u4rf-w-wOx5ek4",
-    authDomain: "ssdproject-23aa9.firebaseapp.com",
-    projectId: "ssdproject-23aa9",
-    storageBucket: "ssdproject-23aa9.firebasestorage.app",
-    messagingSenderId: "267112903416",
-    appId: "1:267112903416:web:99d74d76c0ca21ef58410d",
-    measurementId: "G-WCEPFMP510"
-  };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+
 
   function showMessage(message, divId) {
     const messageDiv = document.getElementById(divId);

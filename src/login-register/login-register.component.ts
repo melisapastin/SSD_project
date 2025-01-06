@@ -1,26 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User as FirebaseUser } from '@angular/fire/auth';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FirebaseService } from '../app/services/firebase.service';
+import { AuthService } from '../app/services/auth.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgClass} from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for [(ngModel)]
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
-  imports: [CommonModule],
+  imports: [FormsModule, NgClass , CommonModule],
   templateUrl: './login-register.component.html',
   styleUrls: ['./login-register.component.css']
+    // Add FormsModule directly to component imports
 })
-export class LoginRegisterComponent {
+export class LoginRegisterComponent  implements OnInit {
   showLogin: boolean = true;
   showRegister: boolean = false;
-
+  user$!: Observable<FirebaseUser | null>;
   loginForm: FormGroup;
   registerForm: FormGroup;
 
+
   constructor(
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
+    private authService: AuthService,
     private router: Router  // Inject Router
   ) {
     this.loginForm = this.fb.group({
@@ -92,15 +98,37 @@ export class LoginRegisterComponent {
       messageDiv.style.pointerEvents = "none"; // Prevent any interaction
     }
   }
+  ngOnInit(): void {
+    // Listen for the currently logged-in user
+    this.user$ = this.authService.getUser();
+  }
+  loginWithGoogle(): void {
+    this.authService
+        .loginWithGoogle() // Consume the service
+        .then(user => {
+          if (user) {
+            console.log('User logged in:', user);
 
-  loginUser() {
+            // Example: navigate to the dashboard or display a success message
+            this.router.navigate(['/dashboard']);
+          } else {
+            // Handle cases where the user object is null
+            console.warn('No user was returned after login.');
+          }
+        })
+        .catch((error: { message: string }) => {
+          console.error('Login Error:', error.message);
+          this.showMessage('Login failed: ' + error.message, 'error-div');
+        });
+  }
+ loginUser() {
     const { email, password } = this.loginForm.value;
-    this.firebaseService.loginUser(email, password)
+    this.authService.loginUser(email, password)
       .then(() => {
         console.log('Login successful');
         this.router.navigate(['/dashboard']);  // Navigate to the dashboard
       })
-      .catch((error) => {
+      .catch((error: { message: string; }) => {
         console.error('Login failed:', error.message);
         alert('Login failed: ' + error.message);
       });
@@ -108,7 +136,7 @@ export class LoginRegisterComponent {
 
   registerUser() {
     const { username, email, password } = this.registerForm.value;
-    this.firebaseService.registerUser(username, email, password)
+    this.authService.registerUser(username, email, password)
       .then(() => {
         console.log('Registration successful');
         this.router.navigate(['/dashboard']);  // Navigate to the dashboard
