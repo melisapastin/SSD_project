@@ -3,7 +3,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 import { importProvidersFrom } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 
 import { firebaseConfig } from './firebase-config';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,6 +16,7 @@ import {initializeApp} from 'firebase/app';
 console.log('Bootstrapping Angular...');
 bootstrapApplication(AppComponent, {
   providers: [
+    importProvidersFrom(FormsModule),
     provideRouter(routes), // Add your routes here if using RouterOutlet
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
