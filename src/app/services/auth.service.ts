@@ -15,27 +15,27 @@ export class AuthService {
   // Login with Google
 
   async loginWithGoogle() {
-    const provider = new  GoogleAuthProvider()
-    const auth=  getAuth();
-    provider.setCustomParameters({
-      'prompt': 'select_account'  // Force account selection
-    });
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
+    provider.setCustomParameters({ prompt: 'select_account' }); // Force account selection
 
     try {
-      const result = await signInWithPopup(auth,provider);
+      const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if user is defined and then set the cookie
+      // Store user refresh token in a secure way
       if (user && user.refreshToken) {
         document.cookie = `google_token=${user.refreshToken}; SameSite=None; Secure`;
       }
 
-      return user;
+      return user; // Return the user object
     } catch (error) {
       console.error('Google Login Error:', error);
-      return null;
+      throw error; // Allow error handling in the calling function
     }
   }
+
 
 // Logout
   async logout(): Promise<void> {

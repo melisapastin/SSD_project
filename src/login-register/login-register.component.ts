@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User as FirebaseUser } from '@angular/fire/auth';
+import {getAdditionalUserInfo, User as FirebaseUser} from '@angular/fire/auth';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../app/services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule, NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import FormsModule for [(ngModel)]
+import { FormsModule } from '@angular/forms';
+import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'; // Import FormsModule for [(ngModel)]
 
 @Component({
   selector: 'app-login-register',
@@ -99,36 +100,53 @@ export class LoginRegisterComponent implements OnInit {
         this.showMessage(`Registration failed: ${error.message}`, 'registerMessage');
       });
   }
-  loginWithGoogle(): void {
-    this.authService
-      .loginWithGoogle()
-      .then((user) => {
-        if (user) {
-          console.log('User logged in with Google:', user);
+
+  loginWithGoogle() {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const additionalUserInfo = getAdditionalUserInfo(result);
+
+        if (!additionalUserInfo?.isNewUser) {
+          // Existing user successfully logged in
+          console.log('Existing user logged in:', user);
           this.router.navigate(['/dashboard']);
         } else {
-          console.warn('No user was returned after login.');
+          // Prevent new users from logging in here
+          console.error('This account is not registered yet. Please register first.');
+          this.showMessage('This account is not registered yet. Please register first.', 'loginMessage');
         }
       })
-      .catch((error: { message: string }) => {
-        console.error('Google Login Error:', error.message);
-        this.showMessage(`Login failed: ${error.message}`, 'error-div');
+      .catch((error) => {
+        console.error('Google Login Error:', error);
+        this.showMessage(`Login failed: ${error.message}`, 'loginMessage');
       });
   }
 
   registerWithGoogle(): void {
-    this.authService
-      .loginWithGoogle()
-      .then((user) => {
-        if (user) {
-          console.log('User logged in with Google:', user);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const additionalUserInfo = getAdditionalUserInfo(result);
+
+        if (additionalUserInfo?.isNewUser) {
+          // New user successfully registered
+          console.log('New user registered with Google:', user);
           this.router.navigate(['/dashboard']);
         } else {
-          console.warn('No user was returned after login.');
+          // Prevent existing users from re-registering
+          console.error('This account is already registered. Please log in instead.');
+          this.showMessage('This account is already registered. Please log in instead.', 'registerMessage');
         }
       })
-      .catch((error: { message: string }) => {
-        console.error('Google Registration Error:', error.message);
+      .catch((error) => {
+        console.error('Google Registration Error:', error);
         this.showMessage(`Registration failed: ${error.message}`, 'registerMessage');
       });
   }
