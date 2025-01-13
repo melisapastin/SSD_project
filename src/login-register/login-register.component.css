@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+@import url("http://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
 * {
   margin: 0;
@@ -14,7 +14,9 @@ body {
   align-items: center;
   min-height: 100vh;
   height: 100%;
-  background: url('../assets/background.jpg') no-repeat center center/cover;
+  background: url('../assets/background.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
 
@@ -31,23 +33,26 @@ header {
 }
 
 .logo {
-  font-size: 2.5em;
+  font-size: 2em;
   color: white;
+  user-select: none;
+  font-family: 'Poppins', sans-serif;
   font-weight: bold;
 }
 
 .navigation button {
-  width: 140px;
+  width: 130px;
   height: 50px;
   background: transparent;
   border: 2px solid white;
+  outline: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1.1em;
   color: white;
   font-weight: 500;
-  margin-left: 20px;
-  transition: 0.5s;
+  margin-left: 40px;
+  transition: .5s;
 }
 
 .navigation button:hover {
@@ -58,23 +63,23 @@ header {
 .wrapper {
   position: relative;
   width: 400px;
-  height: 460px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  height: 440px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .5);
   border-radius: 20px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, .5);
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   transform: scale(0);
-  transition: transform 0.5s ease, height 0.2s ease;
+  transition: transform .5s ease, height .2s ease;
 }
 
 .wrapper.active {
   transform: scale(1);
-  height: 520px;
+  height: 600px;
 }
 
 .form-box {
@@ -83,19 +88,27 @@ header {
 }
 
 .form-box h2 {
-  font-size: 2.2em;
+  font-size: 2em;
+  color: #162938;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.form-box p {
+  font-size: 1em;
   color: #162938;
   text-align: center;
 }
 
-.input-box {
+.mb-3 {
   position: relative;
   width: 100%;
   height: 50px;
-  margin-bottom: 25px;
+  border-bottom: 2px solid #162938;
+  margin: 30px 0;
 }
 
-.input-box label {
+.mb-3 label {
   position: absolute;
   top: 50%;
   left: 5px;
@@ -104,15 +117,11 @@ header {
   color: #162938;
   font-weight: 500;
   pointer-events: none;
-  transition: 0.5s;
+  transition: .5s;
+  z-index: 1; /* Ensure label stays above the input text */
 }
 
-.input-box input:focus~label,
-.input-box input:valid~label {
-  top: -5px;
-}
-
-.input-box input {
+.mb-3 input {
   width: 100%;
   height: 100%;
   background: transparent;
@@ -122,9 +131,15 @@ header {
   color: #162938;
   font-weight: 600;
   padding: 0 35px 0 5px;
+  z-index: 0; /* Make sure input text stays below the label */
 }
 
-.input-box .icon {
+.mb-3 input:focus~label,
+.mb-3 input:valid~label {
+  top: -10px; /* Move label up when input is focused or valid */
+}
+
+.mb-3 .icon {
   position: absolute;
   right: 8px;
   font-size: 1.2em;
@@ -133,7 +148,7 @@ header {
 }
 
 .remember-forgot {
-  font-size: 0.9em;
+  font-size: .9em;
   color: #162938;
   font-weight: 500;
   margin: -15px 0 15px;
@@ -160,6 +175,7 @@ header {
   height: 45px;
   background: #162938;
   border: none;
+  outline: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1em;
@@ -168,7 +184,7 @@ header {
 }
 
 .login-register {
-  font-size: 0.9em;
+  font-size: .9em;
   color: #162938;
   text-align: center;
   font-weight: 500;
@@ -181,9 +197,6 @@ header {
   font-weight: 600;
 }
 
-.login-register p a:hover {
-  text-decoration: underline;
-}
 .login-google, .register-google {
   margin-top: 15px;
   padding: 10px;
@@ -195,12 +208,41 @@ header {
   border-radius: 6px;
   transition: 0.3s ease;
 }
-
 .login-google:hover,
 .register-google:hover {
   background: rgba(22, 41, 56, 0.2);
 }
 
+.login-register p a:hover {
+  text-decoration: underline;
+}
+
+.login-google, .register-google {
+  margin-top: 15px;
+}
+
+.login-google p, .register-google p {
+  text-align: center;
+}
+/* Apply margin to the Login button */
+.form-box.login .btn.btn-primary {
+  margin-bottom: 10px; /* Add margin-bottom to distance from Google login button */
+}
+
+/* Optionally, add some margin-top to the Google login button for more spacing */
+.form-box.login .btn.btn-secondary {
+  margin-top: 3px;
+}
+
+/* Apply margin to the Register button */
+.form-box.register .btn.btn-primary {
+  margin-bottom: 10px; /* Add margin-bottom to distance from Google register button */
+}
+
+/* Optionally, add some margin-top to the Register with Google button for more spacing */
+.form-box.register .btn.btn-secondary {
+  margin-top: 3px;
+}
 
 .messageDiv {
   background-color: #162938;
@@ -226,3 +268,5 @@ header {
 .messageDiv .close-btn:hover {
   color: #162938;
 }
+
+
