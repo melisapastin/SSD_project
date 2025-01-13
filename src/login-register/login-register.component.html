@@ -18,114 +18,91 @@
 
 <div class="wrapper" [ngClass]="getWrapperClass()">
   <!-- Login Form -->
-  <div class="form-box login" *ngIf="showLogin">
+  <div class="container mt-5" *ngIf="isLoginVisible">
     <h2>Login</h2>
-    <div id="loginMessage" class="messageDiv" style="display:none"></div>
-    <div class="input-box">
-      <input type="email"
-             name="email" required/>
-      <label>Email</label>
-    </div>
-    <div class="input-box">
-      <input type="password"  required>
-      <label>Password</label>
-    </div>
-    <button class="btn" id="Login" (click)="onLogin()">Login</button>
-    <div class="login-google">
-      <button (click)="loginWithGoogle()">Login with Google</button>
-
-      <div *ngIf="user$ | async as user; else loggedOut">
-        <p>Welcome, {{ user.displayName }}</p>
-        <img [src]="user.photoURL" alt="User Image">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          autocomplete="email"
+          placeholder="Enter your email"
+        />
       </div>
-
-      <ng-template #loggedOut>
-        <p>You're not logged in.</p>
-      </ng-template>
-    </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          autocomplete="new-password"
+          placeholder="Enter your password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">
+        Login
+      </button>
+    </form>
+    <button (click)="loginWithGoogle()" class="btn btn-secondary mt-3">
+      Login with Google
+    </button>
   </div>
 
   <!-- Register Form -->
-  <div class="form-box register" *ngIf="showRegister">
+  <div class="form-box register" *ngIf="isRegisterVisible">
     <h2>Register</h2>
-    <div id="registerMessage" class="messageDiv" style="display:none"></div>
-    <div class="input-box">
-      <input type="text" id="rUsername" required>
-      <label>Username</label>
-    </div>
-    <div class="input-box">
-      <input type="email" id="rEmail" required>
-      <label>Email</label>
-    </div>
-    <div class="input-box">
-      <input type="password" id="rPassword" required>
-      <label>Password</label>
-    </div>
-    <button class="btn" id="Register" (click)="onRegister()">Register</button>
-    <div class="register-google">
-      <p>Register with <a href="#" (click)="showRegisterForm()">Google</a></p>
-    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <div class="mb-3">
+        <label for="rUsername" class="form-label">Username</label>
+        <input
+          type="text"
+          id="rUsername"
+          formControlName="username"
+          autocomplete="username"
+          class="form-control"
+          placeholder="Enter your username"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="rEmail" class="form-label">Email</label>
+        <input
+          type="email"
+          id="rEmail"
+          formControlName="email"
+          autocomplete="email"
+          class="form-control"
+          placeholder="Enter your email"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="rPassword" class="form-label">Password</label>
+        <input
+          type="password"
+          id="rPassword"
+          formControlName="password"
+          autocomplete="new-password"
+          class="form-control"
+          placeholder="Enter your password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">
+        Register
+      </button>
+    </form>
+    <p class="mt-3">
+      Register with <a href="#" (click)="registerWithGoogle()">Google</a>
+    </p>
+  </div>
+
+  <!-- Messages -->
+  <div class="alert alert-info mt-3" *ngIf="message">
+    {{ message }}
   </div>
 </div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-  import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-
-
-
-
-  function showMessage(message, divId) {
-    const messageDiv = document.getElementById(divId);
-    messageDiv.style.display = "block";
-    messageDiv.innerHTML = message;
-    messageDiv.style.opacity = 1;
-    setTimeout(() => {
-      messageDiv.style.opacity = 0;
-    }, 5000);
-  }
-
-  const register = document.getElementById('Register');
-  console.log('Adding event listener to Register button');
-  register.addEventListener('click', (event) => {
-    event.preventDefault();
-    console.log('Register button clicked');
-    const username = document.getElementById('rUsername').value;
-    const email = document.getElementById('rEmail').value;
-    const password = document.getElementById('rPassword').value;
-
-    const auth = getAuth();
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log('User created:', userCredential);
-        const user = userCredential.user;
-        const userData = {
-          username: username,
-          email: email
-        };
-        showMessage('Account Created Successfully', 'registerMessage');
-        const docRef = doc(db, "users", user.uid);
-        setDoc(docRef, userData)
-          .then(() => {
-            console.log('User data saved to Firestore');
-            window.location.href = 'login-register.component.html';
-          })
-          .catch((error) => {
-            console.error("Error writing document", error);
-          });
-      })
-      .catch((error) => {
-        console.error('Error creating user:', error);
-        const errorCode = error.code;
-        if (errorCode === 'auth/email-already-in-use') {
-          showMessage('Email Address Already Exists!', 'registerMessage');
-        } else {
-          showMessage('Unable to create user', 'registerMessage');
-        }
-      });
-  });
-</script>
 
 </body>
 </html>
