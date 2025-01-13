@@ -79,7 +79,7 @@ header {
 
 .wrapper.active {
   transform: scale(1);
-  height: 520px;
+  height: 600px;
 }
 
 .form-box {
@@ -91,9 +91,16 @@ header {
   font-size: 2em;
   color: #162938;
   text-align: center;
+  margin-bottom: 15px;
 }
 
-.input-box {
+.form-box p {
+  font-size: 1em;
+  color: #162938;
+  text-align: center;
+}
+
+.mb-3 {
   position: relative;
   width: 100%;
   height: 50px;
@@ -101,7 +108,7 @@ header {
   margin: 30px 0;
 }
 
-.input-box label {
+.mb-3 label {
   position: absolute;
   top: 50%;
   left: 5px;
@@ -111,14 +118,10 @@ header {
   font-weight: 500;
   pointer-events: none;
   transition: .5s;
+  z-index: 1; /* Ensure label stays above the input text */
 }
 
-.input-box input:focus~label,
-.input-box input:valid~label {
-  top: -5px;
-}
-
-.input-box input {
+.mb-3 input {
   width: 100%;
   height: 100%;
   background: transparent;
@@ -128,9 +131,15 @@ header {
   color: #162938;
   font-weight: 600;
   padding: 0 35px 0 5px;
+  z-index: 0; /* Make sure input text stays below the label */
 }
 
-.input-box .icon {
+.mb-3 input:focus~label,
+.mb-3 input:valid~label {
+  top: -10px; /* Move label up when input is focused or valid */
+}
+
+.mb-3 .icon {
   position: absolute;
   right: 8px;
   font-size: 1.2em;
@@ -188,6 +197,22 @@ header {
   font-weight: 600;
 }
 
+.login-google, .register-google {
+  margin-top: 15px;
+  padding: 10px;
+  border: 2px solid rgba(22, 41, 56, 0.3);
+  color: #162938;
+  font-weight: 500;
+  background: rgba(22, 41, 56, 0.1);
+  text-align: center;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+.login-google:hover,
+.register-google:hover {
+  background: rgba(22, 41, 56, 0.2);
+}
+
 .login-register p a:hover {
   text-decoration: underline;
 }
@@ -198,6 +223,25 @@ header {
 
 .login-google p, .register-google p {
   text-align: center;
+}
+/* Apply margin to the Login button */
+.form-box.login .btn.btn-primary {
+  margin-bottom: 10px; /* Add margin-bottom to distance from Google login button */
+}
+
+/* Optionally, add some margin-top to the Google login button for more spacing */
+.form-box.login .btn.btn-secondary {
+  margin-top: 3px;
+}
+
+/* Apply margin to the Register button */
+.form-box.register .btn.btn-primary {
+  margin-bottom: 10px; /* Add margin-bottom to distance from Google register button */
+}
+
+/* Optionally, add some margin-top to the Register with Google button for more spacing */
+.form-box.register .btn.btn-secondary {
+  margin-top: 3px;
 }
 
 .messageDiv {
