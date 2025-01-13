@@ -66,4 +66,10 @@ export class AuthService {
       return { unsubscribe };
     });
   }
+
+  // Get the UID of the currently logged-in user
+  getUserId(): string | null {
+    const user = getAuth().currentUser;
+    return user ? user.uid : null; // Return the UID or null if no user is logged in
+  }
 }

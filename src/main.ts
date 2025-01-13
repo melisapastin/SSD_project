@@ -12,13 +12,16 @@ import {getApp, provideFirebaseApp} from '@angular/fire/app';
 import {provideAuth} from '@angular/fire/auth';
 import {getAuth} from 'firebase/auth';
 import {initializeApp} from 'firebase/app';
+import { provideFunctions, getFunctions } from '@angular/fire/functions';
 
 console.log('Bootstrapping Angular...');
+const app = initializeApp(firebaseConfig);
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes), // Add your routes here if using RouterOutlet
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth()),
+    provideFirebaseApp(() => app),
+    provideAuth(() => getAuth(app)),
+    provideFunctions(() => getFunctions(app)),
     importProvidersFrom(BrowserModule),
   ],
 }).catch(err => {

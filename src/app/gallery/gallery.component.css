@@ -7,13 +7,19 @@
   font-family: 'Poppins', sans-serif;
 }
 
+html, body {
+  height: 100%;  /* Ensure full height for both html and body */
+  overflow-x: hidden;  /* Prevent horizontal scrolling */
+}
+
 body {
   background: #7AA6CB;
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100%;  /* Ensures the body takes full height of the screen */
+  overflow-y: auto;  /* Enables scrolling if content exceeds viewport height */
 }
 
 header {
@@ -88,6 +94,7 @@ main p {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
+  /* Remove scroll here so that the scroll applies only to the body */
 }
 
 .gallery-item {

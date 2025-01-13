@@ -10,7 +10,8 @@
 <header>
   <div class="logo">Habitly</div>
   <div class="button-container">
-    <button class="btnAddPicture">Add Picture</button>
+    <input type="file" (change)="uploadFile($event)" style="display: none;" id="fileInput">
+    <button class="btnAddPicture" (click)="document.getElementById('fileInput')?.click()">Add Picture</button>
     <button class="btnGoBack" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
   </div>
 </header>
@@ -19,8 +20,11 @@
   <h1>Gallery</h1>
   <p>Browse your uploaded pictures below.</p>
   <div class="gallery-container">
-    <!-- Gallery items will go here -->
+    <div *ngFor="let item of galleryItems" class="gallery-item">
+      <img [src]="item" alt="Gallery Image">
+    </div>
   </div>
 </main>
+
 </body>
 </html>

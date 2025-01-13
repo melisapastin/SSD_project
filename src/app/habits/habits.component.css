@@ -42,6 +42,7 @@ header {
 }
 
 .btnAddHabit,
+.btnSendEmail,
 .btnGoBack {
   width: 130px;
   height: 50px;
@@ -60,6 +61,7 @@ header {
 }
 
 .btnAddHabit:hover,
+.btnSendEmail:hover,
 .btnGoBack:hover {
   background-color: white;
   color: #213D55;
