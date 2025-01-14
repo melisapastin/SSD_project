@@ -1,0 +1,89 @@
+@import url("http://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #7AA6CB;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.table-container {
+  margin: 40px 20px 20px 20px;
+  background-color: #ccc; /* Light gray background for the table container */
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-y: auto;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #162938;
+}
+
+.table th {
+  background-color: #243c4e; /* Light blue background for table header */
+  color: white; /* White text for better contrast */
+}
+
+.table tr:nth-child(even) {
+  background-color: #e1e9f2; /* Light blue background for even rows */
+}
+
+.table tr:nth-child(odd) {
+  background-color: #ffffff; /* White background for odd rows */
+}
+
+.table td {
+  color: #162938; /* Dark text color for readability */
+}
+
+/* Style for the Edit and Delete buttons */
+/* Style for the container that holds the buttons side by side */
+.button-container {
+  display: flex;
+  gap: 10px; /* Adds space between the buttons */
+}
+
+/* Style for the Edit and Delete buttons */
+.btnEdit,
+.btnDelete {
+  width: 100px; /* Smaller width */
+  height: 40px; /* Smaller height */
+  background-color: transparent;
+  border: 2px solid #213D55; /* Same border color as other buttons */
+  color: #213D55; /* Same text color as other buttons */
+  font-weight: 500;
+  font-size: 1em; /* Adjust the font size */
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+/* Hover effect for Edit and Delete buttons */
+.btnEdit:hover,
+.btnDelete:hover {
+  background-color: #213D55;
+  color: white;
+}
+
+

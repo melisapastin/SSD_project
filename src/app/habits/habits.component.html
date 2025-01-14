@@ -1,27 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Habits</title>
-  <link rel="stylesheet" href="habits.component.css">
-</head>
-<body>
-<header>
-  <div class="logo">Habitly</div>
-  <div class="button-container">
-    <button class="btnAddHabit">Add Habit</button>
-    <button class="btnSendEmail" (click)="sendEmail()">Send Email</button>
-    <button class="btnGoBack" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
-  </div>
-</header>
+<div class="habits">
+  <header>
+    <div class="logo">Habitly</div>
+    <div class="button-container">
+      <button class="btnAddHabit" (click)="addHabit()">Add Habit</button>
+      <button class="btnAddHabit" (click)="sendEmail()">Send Email</button>
+      <button class="btnGoBack" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
+    </div>
+  </header>
 
-<main>
-  <h1>My Habits</h1>
-  <p>Track your progress and habits below.</p>
-  <div class="habits-container">
-    <!-- Habit items will go here -->
-  </div>
-</main>
-</body>
-</html>
+  <main>
+    <h1>My Habits</h1>
+    <p>Track your progress and habits below.</p>
+
+    <section class="habits-list">
+      <ng-container *ngIf="habits$ | async as habits; else loading">
+        <app-habits-table
+          [habits]="habits"
+          (habitDeleted)="onHabitDeleted()"
+        ></app-habits-table>
+      </ng-container>
+
+      <ng-template #loading>
+        <p>Loading habits...</p>
+      </ng-template>
+
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </section>
+  </main>
+</div>
