@@ -11,4 +11,5 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'gallery', component: GalleryComponent },
   { path: 'habits', component: HabitsComponent },
+
 ];

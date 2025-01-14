@@ -46,8 +46,8 @@ header {
   width: 130px;
   height: 50px;
   background-color: transparent;
-  border: 2px solid white;
-  color: white;
+  border: 2px solid  dodgerblue;
+  color: dodgerblue;
   font-weight: 500;
   font-size: 1.1em;
   border-radius: 6px;
@@ -68,7 +68,7 @@ header {
 main {
   margin-top: 120px;
   text-align: center;
-  color: white;
+  color:  black;
 }
 
 main h1 {
@@ -80,7 +80,7 @@ main h1 {
 main p {
   font-size: 1.5em;
   margin-top: 20px;
-  color: #ccc;
+  color: black;
 }
 
 .habits-container {

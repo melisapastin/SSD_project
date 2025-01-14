@@ -1,0 +1,27 @@
+
+
+<div class="table-container">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Habit Name</th>
+      <th>Frequency</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let habit of habits; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ habit.name }}</td>
+      <td>{{ habit.frequency }}</td>
+      <td>
+        <!-- Add action buttons if needed -->
+        <button class="btn btn-sm btn-primary">Edit</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteHabit(habit.id)">Delete</button>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
